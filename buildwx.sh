@@ -36,6 +36,7 @@ pushd linux_build
 make -j2
 make install
 popd
+popd
 pushd wxlua/wxLua
 rm -rf build_linux
 mkdir build_linux
