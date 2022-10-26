@@ -2,21 +2,9 @@
 // Purpose:     wxLuaModuleApp - code to allow wxLua to be used as a module using require"wx"
 // Author:      John Labenski, J Winwood
 // Created:     14/11/2001
-// Copyright:   (c) 2012 John Labenski, 2001-2002 Lomtick Software. All rights reserved.
+// Copyright:   (c) 2012 John Labenski, 2001-2002,2022 Lomtick Software. All rights reserved.
 // Licence:     wxWidgets licence
 /////////////////////////////////////////////////////////////////////////////
-
-//#include <wx/wxprec.h>
-
-#ifndef WX_PRECOMP
-    //#include <wx/wx.h>
-#endif
-
-// This is a method of enabling v6 of comctrl32 controls w/o a manifest.
-// However, it doesn't seem possible to enable them from a DLL even by calling
-// InitCommonControls(), InitCommonControlsEx(), or the EnableVisualStyles() hack.
-//#pragma comment(lib,"comctl32.lib")
-//#pragma comment(linker,"\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 #include <wx/string.h>
 #include <wx/app.h>
@@ -61,14 +49,14 @@ WXLUA_DECLARE_BIND_ALL
 
 #ifdef __WXMSW__
 
-static HINSTANCE wxLuaModule_hDll = NULL;
+static HMODULE wxLuaModule = NULL;
 
-BOOL APIENTRY DllMain( HANDLE hModule, DWORD ul_reason_for_call, LPVOID )
+BOOL APIENTRY DllMain( HANDLE hModule, DWORD ulReason, LPVOID )
 {
-   switch (ul_reason_for_call)
+   switch (ulReason)
    {
-      case DLL_PROCESS_ATTACH : wxLuaModule_hDll = (HINSTANCE)hModule; break;
-      case DLL_PROCESS_DETACH : wxLuaModule_hDll = NULL;
+      case DLL_PROCESS_ATTACH : wxLuaModule = hModule; break;
+      case DLL_PROCESS_DETACH :
       default : break;
    }
 
@@ -76,7 +64,6 @@ BOOL APIENTRY DllMain( HANDLE hModule, DWORD ul_reason_for_call, LPVOID )
 }
 
 #endif // __WXMSW__
-
 
 #ifdef _MSC_VER
     // warning C4275: non dll-interface class 'wxApp' used as base for dll-interface class 'wxLuaModuleApp'
@@ -108,7 +95,7 @@ public:
     void OnLuaError( wxLuaEvent &event );
 
 private:
-    wxArrayString macopenfiles;
+    wxArrayString macOpenFiles;
     DECLARE_ABSTRACT_CLASS(wxLuaModuleApp)
     DECLARE_EVENT_TABLE()
 };
@@ -123,27 +110,15 @@ IMPLEMENT_APP_NO_MAIN(wxLuaModuleApp)
 BEGIN_EVENT_TABLE(wxLuaModuleApp, wxApp)
     EVT_LUA_PRINT       (wxID_ANY, wxLuaModuleApp::OnLuaPrint)
     EVT_LUA_ERROR       (wxID_ANY, wxLuaModuleApp::OnLuaError)
-    //EVT_LUA_DEBUG_HOOK  (wxID_ANY, wxLuaModuleApp::OnLua)
 END_EVENT_TABLE()
 
 bool wxLuaModuleApp::OnInit()
 {
-#ifdef __WXMSW__
-    HMODULE h_comctl32 = ::LoadLibrary(_T("comctl32.dll"));
-    //wxPrintf(wxT("comctl32.dll = %p \n"), (void*)h); fflush(stdout);
-    //wxCHECK_MSG(0 && h != NULL, true, wxT("Error loading comctl32.dll, you can try to continue..."));
-    if (h_comctl32 == NULL)
-        wxPrintf(wxT("wxLuaModule - Error loading comctl32.dll, trying to continue...\n"));
-#endif
-
-    //wxPrintf(wxT("wxLuaModuleApp::OnInit wxLuaState.IsOk()=%d \n"), (int)s_wxlState.IsOk()); fflush(stdout);
     return wxApp::OnInit();
 }
 
 int wxLuaModuleApp::OnExit()
 {
-    // This is never called... it is here for completeness.
-    //wxPrintf(wxT("wxLuaModuleApp::OnExit wxLuaState.IsOk()=%d \n"), (int)s_wxlState.IsOk()); fflush(stdout);
     return wxApp::OnExit();
 }
 
@@ -151,23 +126,24 @@ int wxLuaModuleApp::MainLoop()
 {
     // only run the mainloop if there are any toplevel windows otherwise
     // they cannot exit it and they won't be able to do anything anyway.
-    int  run_main = 0;
-    bool have_windows = (wxTopLevelWindows.GetCount() != 0);
-    if (have_windows && !IsMainLoopRunning()) {
+    int  runMain = 0;
+    bool haveWindows = (wxTopLevelWindows.GetCount() != 0);
+    if (haveWindows && !IsMainLoopRunning()) {
         // process any pending files from MacOpenFiles that were stored during the initial call
-        if (macopenfiles.GetCount() > 0) {
-          MacOpenFiles(macopenfiles);
-          macopenfiles.Empty();
+        if (macOpenFiles.GetCount() > 0) {
+          MacOpenFiles(macOpenFiles);
+          macOpenFiles.Empty();
         }
-        run_main = wxApp::MainLoop();
+        runMain = wxApp::MainLoop();
     }
 
-    return run_main;
+    return runMain;
 }
 
 void wxLuaModuleApp::OnLuaPrint( wxLuaEvent &event )
 {
-    wxPrintf(wxT("%s\n"), event.GetString().c_str()); fflush(stdout);
+    wxPrintf(wxT("%s\n"), event.GetString().c_str());
+    fflush(stdout);
 }
 
 void wxLuaModuleApp::OnLuaError( wxLuaEvent &event )
@@ -196,11 +172,10 @@ void wxLuaModuleApp::MacOpenFiles(const wxArrayString& fileNames)
     else if (!IsMainLoopRunning()) {
         // store any files passed when the Lua handler may not yet be set up;
         // it will be called one more time when the MainLoop starts
-        macopenfiles.Clear();
-        macopenfiles = wxArrayString(fileNames);
+        macOpenFiles.Clear();
+        macOpenFiles = wxArrayString(fileNames);
     }
 }
-
 
 // ----------------------------------------------------------------------------
 // luaopen_wx the C function for require to call
@@ -208,12 +183,10 @@ void wxLuaModuleApp::MacOpenFiles(const wxArrayString& fileNames)
 
 wxLuaModuleApp* app = NULL;
 
-extern "C" {
-    static int reportShutdown(lua_State *L)
-    {
-        s_wxlState.CloseLuaState(true, false);
-        return 0;
-    }
+static int reportShutdown(lua_State *L)
+{
+    s_wxlState.CloseLuaState(true, false);
+    return 0;
 }
 
 int luaopen_wx(lua_State *L)
@@ -223,28 +196,15 @@ int luaopen_wx(lua_State *L)
 
 #ifdef __WXMSW__
     // Set the HINSTANCE to *this* DLL's instance, not the caller app's HINSTANCE.
-    // NOTE: If wxGetInstance() is NULL then wxEntryStart() calls DoCommonPreInit()
-    //       which calls wxSetInstance(::GetModuleHandle(NULL));
-    wxSetInstance(wxLuaModule_hDll);
-
-    // This has been a problem in the past, help people debug it...
-    // The problem will be that cursors/icons probably won't be loaded from
-    // the resources and an assert will be given.
-    if (wxLuaModule_hDll == NULL)
-    {
-        wxPrintf(wxT("wxLuaModule - Error getting HINSTANCE, DllMain() wasn't called! trying to continue...\n"));
-        // Don't exit... it may still work...
-    }
+    wxSetInstance(wxLuaModule);
 #endif // __WXMSW__
 
-    if (!wxEntryStart(argc, argv))
-    {
+    if (!wxEntryStart(argc, argv)) {
         wxPrintf(wxT("wxLuaModule - Error calling wxEntryStart(argc, argv), aborting.\n"));
         return 0;
     }
 
-    if (!wxTheApp || !wxTheApp->CallOnInit())
-    {
+    if (!wxTheApp || !wxTheApp->CallOnInit()) {
         wxPrintf(wxT("wxLuaModule - Error calling wxTheApp->CallOnInit(), aborting.\n"));
         return 0;
     }
@@ -264,14 +224,11 @@ int luaopen_wx(lua_State *L)
         wxPrintf(wxT("wxLuaModule - Error setting up metatable for module wx, aborting.\n"));
         return 0;
     }
-    else
-    {
+    else {
         lua_newtable(L); // new metatable for wx table
-        {
-            lua_pushstring(L, "__gc");
-            lua_pushcfunction(L, reportShutdown);
-            lua_rawset(L, -3); // set metatable.__gc = reportShutdown
-        }
+        lua_pushstring(L, "__gc");
+        lua_pushcfunction(L, reportShutdown);
+        lua_rawset(L, -3); // set metatable.__gc = reportShutdown
         lua_setmetatable(L, -2); // sets metatable for wx table
     }
     return 1; // returns global wx

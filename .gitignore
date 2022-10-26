@@ -31,3 +31,4 @@
 *.out
 *.app
 /.idea/
+/wxlua/wxLua/build_osx/
