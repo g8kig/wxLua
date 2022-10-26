@@ -10807,9 +10807,9 @@ wxLuaBindMethod wxIcon_methods[] = {
 #endif // ((!wxCHECK_VERSION(2,9,5)) && (wxLUA_USE_wxIcon))||((wxCHECK_VERSION(2,9,5)) && (wxLUA_USE_wxIcon))
 
     { "Ok", WXLUAMETHOD_METHOD, s_wxluafunc_wxLua_wxIcon_Ok, 1, NULL },
-    { "SetDepth", WXLUAMETHOD_METHOD, s_wxluafunc_wxLua_wxIcon_SetDepth, 1, NULL },
-    { "SetHeight", WXLUAMETHOD_METHOD, s_wxluafunc_wxLua_wxIcon_SetHeight, 1, NULL },
-    { "SetWidth", WXLUAMETHOD_METHOD, s_wxluafunc_wxLua_wxIcon_SetWidth, 1, NULL },
+//  { "SetDepth", WXLUAMETHOD_METHOD, s_wxluafunc_wxLua_wxIcon_SetDepth, 1, NULL },
+//  { "SetHeight", WXLUAMETHOD_METHOD, s_wxluafunc_wxLua_wxIcon_SetHeight, 1, NULL },
+//  { "SetWidth", WXLUAMETHOD_METHOD, s_wxluafunc_wxLua_wxIcon_SetWidth, 1, NULL },
     { "delete", WXLUAMETHOD_METHOD|WXLUAMETHOD_DELETE, s_wxluafunc_wxLua_wxIcon_delete, 1, NULL },
     { "op_set", WXLUAMETHOD_METHOD, s_wxluafunc_wxLua_wxIcon_op_set, 1, NULL },
 

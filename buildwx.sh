@@ -4,7 +4,7 @@ set -e
 pushd wxWidgets-3.2.1
 rm -r linux_build
 mkdir linux_build
-cd linux_build
+pushd linux_build
 ../configure --prefix=$(pwd)/linux_build \
                     --with-libiconv \
                     --with-libjpeg \
@@ -42,6 +42,5 @@ mkdir build_linux
 pushd build_linux
 cmake -DwxWidgets_CONFIG_EXECUTABLE=$(pwd)/../../../wxWidgets-3.2.1/linux_build/lib/wx/config/gtk3-unicode-3.2 -DwxLua_LUA_LIBRARY_BUILD_SHARED=OFF -DwxLua_LUA_LIBRARY_USE_BUILTIN=ON -DwxLua_LUA_LIBRARY_VERSION=5.2 ..
 make -j2
-popd
 popd
 
