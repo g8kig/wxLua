@@ -10582,6 +10582,7 @@ static int LUACALL wxLua_wxIcon_Ok(lua_State *L)
     return 1;
 }
 
+#if 0
 static wxLuaArgType s_wxluatypeArray_wxLua_wxIcon_SetDepth[] = { &wxluatype_wxIcon, &wxluatype_TNUMBER, NULL };
 static int LUACALL wxLua_wxIcon_SetDepth(lua_State *L);
 static wxLuaBindCFunc s_wxluafunc_wxLua_wxIcon_SetDepth[1] = {{ wxLua_wxIcon_SetDepth, WXLUAMETHOD_METHOD, 2, 2, s_wxluatypeArray_wxLua_wxIcon_SetDepth }};
@@ -10597,7 +10598,9 @@ static int LUACALL wxLua_wxIcon_SetDepth(lua_State *L)
 
     return 0;
 }
+#endif
 
+#if 0
 static wxLuaArgType s_wxluatypeArray_wxLua_wxIcon_SetHeight[] = { &wxluatype_wxIcon, &wxluatype_TNUMBER, NULL };
 static int LUACALL wxLua_wxIcon_SetHeight(lua_State *L);
 static wxLuaBindCFunc s_wxluafunc_wxLua_wxIcon_SetHeight[1] = {{ wxLua_wxIcon_SetHeight, WXLUAMETHOD_METHOD, 2, 2, s_wxluatypeArray_wxLua_wxIcon_SetHeight }};
@@ -10613,7 +10616,9 @@ static int LUACALL wxLua_wxIcon_SetHeight(lua_State *L)
 
     return 0;
 }
+#endif
 
+#if 0
 static wxLuaArgType s_wxluatypeArray_wxLua_wxIcon_SetWidth[] = { &wxluatype_wxIcon, &wxluatype_TNUMBER, NULL };
 static int LUACALL wxLua_wxIcon_SetWidth(lua_State *L);
 static wxLuaBindCFunc s_wxluafunc_wxLua_wxIcon_SetWidth[1] = {{ wxLua_wxIcon_SetWidth, WXLUAMETHOD_METHOD, 2, 2, s_wxluatypeArray_wxLua_wxIcon_SetWidth }};
@@ -10629,6 +10634,7 @@ static int LUACALL wxLua_wxIcon_SetWidth(lua_State *L)
 
     return 0;
 }
+#endif
 
 static wxLuaArgType s_wxluatypeArray_wxLua_wxIcon_delete[] = { &wxluatype_wxIcon, NULL };
 static wxLuaBindCFunc s_wxluafunc_wxLua_wxIcon_delete[1] = {{ wxlua_userdata_delete, WXLUAMETHOD_METHOD|WXLUAMETHOD_DELETE, 1, 1, s_wxluatypeArray_wxLua_wxIcon_delete }};
@@ -11740,7 +11746,7 @@ static int LUACALL wxLua_wxBitmap_SetDepth(lua_State *L)
     // get this
     wxBitmap * self = (wxBitmap *)wxluaT_getuserdatatype(L, 1, wxluatype_wxBitmap);
     // call SetDepth
-    self->SetDepth(depth);
+//  self->SetDepth(depth);
 
     return 0;
 }
@@ -11756,7 +11762,7 @@ static int LUACALL wxLua_wxBitmap_SetHeight(lua_State *L)
     // get this
     wxBitmap * self = (wxBitmap *)wxluaT_getuserdatatype(L, 1, wxluatype_wxBitmap);
     // call SetHeight
-    self->SetHeight(height);
+//  self->SetHeight(height);
 
     return 0;
 }
@@ -11812,7 +11818,7 @@ static int LUACALL wxLua_wxBitmap_SetWidth(lua_State *L)
     // get this
     wxBitmap * self = (wxBitmap *)wxluaT_getuserdatatype(L, 1, wxluatype_wxBitmap);
     // call SetWidth
-    self->SetWidth(width);
+//  self->SetWidth(width);
 
     return 0;
 }
