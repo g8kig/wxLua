@@ -31,9 +31,17 @@
 *.out
 *.app
 .idea/
+
+#Directories
 wxlua/wxLua/build_osx/
 wxlua/wxLua/build_linux
+wxlua/wxLua/build_win
 wxWidgets-3.2.1/build_linux
-wxWidgets-3.2.1/linux_install
+wxWidgets-3.2.1/install_linux
+wxWidgets-3.2.1/build_osx
+wxWidgets-3.2.1/install_osx
+wxWidgets-3.2.1/build_win
+wxWidgets-3.2.1/install_win
+
 
 
