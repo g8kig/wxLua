@@ -33,5 +33,7 @@
 .idea/
 wxlua/wxLua/build_osx/
 wxlua/wxLua/build_linux
-wxWidgets-3.2.1/linux_build
+wxWidgets-3.2.1/build_linux
+wxWidgets-3.2.1/linux_install
+
 
