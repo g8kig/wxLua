@@ -282,7 +282,7 @@ ADD_EXECUTABLE_FULL( luac ALLOW_MISSING_FILES
     SOURCES
         src/luac.c
         ${luac_EXTRA_SOURCES}
-        #${LuaLib_SOURCE_FILES} # alternatively we could simply recompile these
+#       ${LuaLib_SOURCE_FILES} # alternatively we could simply recompile these
         ${LUAC_SOURCES}
     LINK_LIBRARIES
         # LuaLib                # see note above about DLL linking
