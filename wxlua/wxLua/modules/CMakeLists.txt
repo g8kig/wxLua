@@ -260,19 +260,6 @@ endif()
 
 # ---------------------------------------------------------------------------
 
-if (MSVC60)
-    # Some sort of bug linking to the object files in MSVC6
-    # the full path is in the .dsp file, but MSVC errors on ./lapi.obj
-    # so somehow the path is stripped off.
-    set(LUAC_SOURCES ${LuaLib_SOURCE_FILES})
-else()
-    # Reuse the object files since we cannot link to the LuaLib DLL
-    # because the LUAI_FUNC Lua functions are not exported.
-    set(LuaLib_OBJECTS ${LuaLib_OBJECT_FILES})
-    set_source_files_properties(${LuaLib_OBJECTS} PROPERTIES GENERATED TRUE)
-    set(LUAC_SOURCES ${LuaLib_OBJECTS})
-endif()
-
 if (${wxLua_LUA_LIBRARY_VERSION} VERSION_EQUAL 5.1)
     set( luac_EXTRA_SOURCES "src/print.c" )
 endif()
@@ -282,16 +269,12 @@ ADD_EXECUTABLE_FULL( luac ALLOW_MISSING_FILES
     SOURCES
         src/luac.c
         ${luac_EXTRA_SOURCES}
-#       ${LuaLib_SOURCE_FILES} # alternatively we could simply recompile these
-        ${LUAC_SOURCES}
+        ${LuaLib_SOURCE_FILES}
     LINK_LIBRARIES
-        # LuaLib                # see note above about DLL linking
         ${LUA_LINK_LIBRARIES}
     PROPERTIES LINKER_LANGUAGE C
     PROPERTIES FOLDER "wxLua/apps"
     INSTALL ${WXLUA_APP_INSTALL_FLAGS})
-
-add_dependencies(luac LuaLib)
 
 # ---------------------------------------------------------------------------
 
@@ -305,7 +288,6 @@ ADD_EXECUTABLE_FULL( lua
         ${LUA_LINK_LIBRARIES}
     ${LUA_EXE_PROPERTIES}
     PROPERTIES LINKER_LANGUAGE C
-    #PROPERTIES LINK_FLAGS "/MANIFEST:NO /INCREMENTAL:NO" # MSVC flags to use when trying to use manifest file
     PROPERTIES FOLDER "wxLua/apps"
     INSTALL ${WXLUA_APP_INSTALL_FLAGS})
 
@@ -328,7 +310,6 @@ else()
         ${LUA_DLL_PROPERTIES}
         PROPERTIES LINKER_LANGUAGE C
         PROPERTIES FOLDER "wxLua/Modules")
-        #INSTALL "${WXLUA_LIB_INSTALL_FLAGS}")
 
     if (WIN32)
         set_target_properties(LuaLibShared PROPERTIES OUTPUT_NAME ${wxLua_LuaLibShared_NAME})
@@ -697,10 +678,18 @@ endfunction (wxLua_Modules_LuaModule_TARGETS)
 # ===========================================================================
 
 if (wxLua_LUA_LIBRARY_USE_BUILTIN)
-    if (${wxLua_LUA_LIBRARY_VERSION} VERSION_EQUAL 5.1)
-        add_subdirectory( lua-5.1 )
+    if (${wxLua_LUA_LIBRARY_VERSION} VERSION_EQUAL 5.4)
+        add_subdirectory( lua-5.4 )
     else()
-        add_subdirectory( lua-5.2 )
+        if (${wxLua_LUA_LIBRARY_VERSION} VERSION_EQUAL 5.3)
+            add_subdirectory( lua-5.3 )
+        else()
+            if (${wxLua_LUA_LIBRARY_VERSION} VERSION_EQUAL 5.2)
+                add_subdirectory( lua-5.2 )
+            else()
+                add_subdirectory( lua-5.1 )
+            endif()
+        endif()
     endif()
 endif()
 
