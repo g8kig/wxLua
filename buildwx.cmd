@@ -11,7 +11,7 @@ cmake -G"MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=..\i
 if NOT ["%errorlevel%"]==["0"] (
     exit /b %errorlevel%
 )
-cmake --build . --target install --parallel 12
+cmake --build . --target install --parallel %NUMBER_OF_PROCESSORS%
 if NOT ["%errorlevel%"]==["0"] (
     exit /b %errorlevel%
 )
@@ -23,7 +23,7 @@ cmake -G"MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DwxWidgets_CONFIGURATION=m
 if NOT ["%errorlevel%"]==["0"] (
     exit /b %errorlevel%
 )
-cmake --build . --parallel 12
+cmake --build . --parallel %NUMBER_OF_PROCESSORS%
 if NOT ["%errorlevel%"]==["0"] (
     exit /b %errorlevel%
 )

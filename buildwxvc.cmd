@@ -11,7 +11,7 @@ cmake -G"Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=..\install_win
 if NOT ["%errorlevel%"]==["0"] (
     exit /b %errorlevel%
 )
-ninja install
+cmake --build . --target install --parallel %NUMBER_OF_PROCESSORS%
 if NOT ["%errorlevel%"]==["0"] (
     exit /b %errorlevel%
 )
@@ -25,7 +25,7 @@ cmake -G"Ninja" -DCMAKE_C_FLAGS="-I%WXINCLUDE%" -DCMAKE_RC_FLAGS="-I%WXINCLUDE%"
 if NOT ["%errorlevel%"]==["0"] (
     exit /b %errorlevel%
 )
-ninja
+cmake --build . --parallel %NUMBER_OF_PROCESSORS%
 if NOT ["%errorlevel%"]==["0"] (
     exit /b %errorlevel%
 )

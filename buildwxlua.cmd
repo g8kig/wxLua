@@ -9,7 +9,7 @@ cmake -G"MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DwxWidgets_CONFIGURATION=m
 if NOT ["%errorlevel%"]==["0"] (
     exit /b %errorlevel%
 )
-cmake --build . --parallel 12
+cmake --build . --parallel %NUMBER_OF_PROCESSORS%
 if NOT ["%errorlevel%"]==["0"] (
     exit /b %errorlevel%
 )
