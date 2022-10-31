@@ -28,4 +28,4 @@ if NOT ["%errorlevel%"]==["0"] (
     exit /b %errorlevel%
 )
 cd %CURDIR%
-copy %CURDIR%\wxWidgets-3.2.1\install_win\lib\gcc_x64_dll\*.dll wxlua\wxLua\build_win\bin\Debug
+copy %CURDIR%\wxWidgets-3.2.1\install_win\lib\gcc_x64_dll\*.dll wxlua\wxLua\build_win\bin\Release
