@@ -9,7 +9,7 @@ cmake -G"MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DwxWidgets_CONFIGURATION=m
 if NOT ["%errorlevel%"]==["0"] (
     exit /b %errorlevel%
 )
-mingw32-make.exe -j2
+cmake --build . --parallel 12
 if NOT ["%errorlevel%"]==["0"] (
     exit /b %errorlevel%
 )
