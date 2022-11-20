@@ -289,6 +289,8 @@ ADD_EXECUTABLE_FULL( lua
     PROPERTIES FOLDER "wxLua/apps"
     INSTALL ${WXLUA_APP_INSTALL_FLAGS})
 
+target_include_directories(lua PRIVATE ${wxWidgets_INCLUDE_DIRS})
+
 # ---------------------------------------------------------------------------
 # The wxLua Lua module always links to a shared LuaLib even when using luaproxydll.
 # We need to build a shared version no matter what.
