@@ -14,6 +14,10 @@ if(MINGW)
 	set(MINGW_EXTRA_LIBS "-lversion;-lshlwapi;-luxtheme;-loleacc;-lws2_32;-limm32")
 	message("MINGW_EXTRA_LIBS is " ${MINGW_EXTRA_LIBS})
 endif(MINGW)
+set(MACOS_EXTRA_LIBS)
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+	set(MACOS_EXTRA_LIBS "-framework CoreFoundation")
+endif()
 
 if (NOT DEFINED wxLua_ROOT_DIR)
     set(wxLua_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../ CACHE INTERNAL
@@ -45,6 +49,7 @@ ADD_EXECUTABLE_FULL( wxLua_app WIN32 MACOSX_BUNDLE
         LuaLib
         ${wxWidgets_LIBRARIES}
 		${MINGW_EXTRA_LIBS}
+		${MACOS_EXTRA_LIBS}
     PROPERTIES FOLDER "wxLua/apps"
     PROPERTIES OUTPUT_NAME wxLua
     INSTALL ${WXLUA_APP_INSTALL_FLAGS})
@@ -74,6 +79,7 @@ ADD_EXECUTABLE_FULL( wxLuaCan WIN32 MACOSX_BUNDLE
         LuaLib
         ${wxWidgets_LIBRARIES}
 		${MINGW_EXTRA_LIBS}
+		${MACOS_EXTRA_LIBS}
     PROPERTIES FOLDER "wxLua/apps"
     INSTALL ${WXLUA_APP_INSTALL_FLAGS})
 
@@ -133,6 +139,7 @@ ADD_EXECUTABLE_FULL( wxLuaFreeze WIN32 MACOSX_BUNDLE
         LuaLib
         ${wxWidgets_LIBRARIES}
 		${MINGW_EXTRA_LIBS}
+		${MACOS_EXTRA_LIBS}
     PROPERTIES FOLDER "wxLua/apps"
     INSTALL ${WXLUA_APP_INSTALL_FLAGS})
 
