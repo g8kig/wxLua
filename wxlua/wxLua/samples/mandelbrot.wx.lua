@@ -17,7 +17,7 @@
 -----------------------------------------------------------------------------
 
 -- Load the wxLua module, does nothing if running from wxLua, wxLuaFreeze, or wxLuaEdit
-package.cpath = package.cpath..";./?.dll;./?.so;../lib/?.so;../lib/vc_dll/?.dll;../lib/bcc_dll/?.dll;../lib/mingw_dll/?.dll;"
+package.cpath = package.cpath..";./?.dll;./?.so;./lib?.dylib;../lib/?.so;../lib/vc_dll/?.dll;../lib/bcc_dll/?.dll;../lib/mingw_dll/?.dll;"
 require "wx"
 
 local width = 800
@@ -124,7 +124,8 @@ local function SetTipText(text)
 end
 
 local function OnPaint(event)
-  local dc = wx.wxAutoBufferedPaintDC(frame)
+--local dc = wx.wxAutoBufferedPaintDC(frame)
+  local dc = wx.wxPaintDC(frame)
   if bitmap then
     dc:DrawBitmap(bitmap, 0, 0, true)
   end
@@ -243,7 +244,7 @@ end
 
 local function NewFrame()
   --  Create Frame (not resizable)
-  frame = wx.wxFrame(wx.NULL, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize(width, height), bit32.band(wx.wxDEFAULT_FRAME_STYLE, bit32.bnot(wx.wxRESIZE_BORDER + wx.wxMAXIMIZE_BOX)))
+  frame = wx.wxFrame(wx.NULL, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize(width, height), wx.wxDEFAULT_FRAME_STYLE - (wx.wxRESIZE_BORDER + wx.wxMAXIMIZE_BOX))
   --  Create static text
   stext = wx.wxStaticText(frame, -1, "", wx.wxPoint(0, 0), wx.wxSize(80, 16))
   stext:SetBackgroundColour(wx.wxColour(220, 220, 220))
