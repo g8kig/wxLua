@@ -40,7 +40,7 @@ install_name_tool -add_rpath @executable_path/. $(pwd)/bin/Release/Release/wxLua
 codesign --force --deep --sign - $(pwd)/bin/Release/Release/wxLuaFreeze.app
 install_name_tool -add_rpath @executable_path/. $(pwd)/bin/Release/Release/lua
 codesign --force --deep --sign - $(pwd)/bin/Release/Release/lua
-for DYLIB in $(ls *.dylib)
+for DYLIB in $(ls codesign --force --deep --sign - $(pwd)/bin/Release/Release/*.dylib)
 do
 	codesign --force --deep --sign - $DYLIB
 done
