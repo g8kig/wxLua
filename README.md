@@ -13,6 +13,7 @@ This version is a batteries-included version containing wxLua, wxWidgets, etc.
 
 The simple wxLua script below creates a wxFrame top-level window, with a menubar, and a statusbar. More examples of wxLua programs can be found in the samples directory of the wxLua distribution.
 
+```
   frame = wx.wxFrame(wx.NULL, wx.wxID_ANY, "wxLua Minimal Demo",
                    wx.wxDefaultPosition, wx.wxSize(450, 450),
                    wx.wxDEFAULT_FRAME_STYLE)
@@ -51,4 +52,4 @@ The simple wxLua script below creates a wxFrame top-level window, with a menubar
 
   -- finally, show the frame window
   frame:Show(true)
-  s
+```
